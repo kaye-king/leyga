@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Dark background */
+    color: #fff;
+}
+.header {
+    background: #1e1e1e;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffb74d; /* Golden text */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0px 4px 8px rgba(255, 183, 77, 0.3);
+}
+.container {
+    display: flex;
+    width: 85%;
+    margin: 30px auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(255, 183, 77, 0.3);
+}
+.sidebar {
+    width: 250px;
+    background: #212121;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar button {
+    width: 90%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #ffb74d;
+    color: #000;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+.sidebar button:hover {
+    background: #ff9800;
+    transform: scale(1.05);
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+.content h2 {
+    color: #ffb74d;
+    border-bottom: 2px solid #ffb74d;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffb74d;
+    box-shadow: 0px 0px 10px rgba(255, 183, 77, 0.5);
+}
+.info {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.info-table {
+    width: 80%; /* Adjusted width for better centering */
+    border-collapse: collapse;
+    margin: 0 auto; /* Center the table */
+}
+.info-table th, .info-table td {
+    padding: 10px;
+    font-size: 18px;
+    text-align: center; /* Center text in table */
+}
+.info-table th {
+    background-color: #ffb74d; /* Optional: Add background color to headers */
+    color: #000; /* Optional: Change text color for headers */
+}
+.info-table td {
+    background-color: #212121; /* Optional: Add background color to cells */
+}
+.label {
+    color: #ffb74d; /* Color for the labels */
+    font-weight: bold; /* Make labels bold */
+}
+.total-row {
+    font-weight: bold;
+    background-color: #ffb74d; /* Highlight total row */
+    color: #000;
+}
+.favorites-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.favorite-item {
+    background: #212121;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    width: 200px; /* Adjust width as needed */
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(255, 183, 77, 0.5);
+}
+.favorite-image {
+    width: 100%; /* Responsive image */
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Carousel styles */
+.carousel {
+    position: relative;
+    max-width: 600px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(255, 183, 77, 0.5);
+}
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.carousel-image {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+.carousel button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 183, 77, 0.8);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    color: #000;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.carousel .prev {
+    left: 10px;
+}
+.carousel .next {
+    right: 10px;
+}
+.pagination {
+    margin-top: 20px;
+}
+.pagination button {
+    background: #ffb74d;
+    color: #000;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.pagination button:hover {
+    background: #ff9800;
+}
+    </style>
+    <script>
+        let currentIndex = 0;
+
+        function showCarousel() {
+            const images = document.querySelectorAll('.carousel-image');
+            const totalImages = images.length;
+
+            const updateCarousel = () => {
+                const offset = -currentIndex * 100;
+                document.querySelector('.carousel-images').style.transform = `translateX(${offset}%)`;
+            };
+
+            document.querySelector('.next').onclick = () => {
+                currentIndex = (currentIndex + 1) % totalImages;
+                updateCarousel();
+            };
+
+            document.querySelector('.prev').onclick = () => {
+                currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                updateCarousel();
+            };
+
+            updateCarousel();
+        }
+
+        const subjects = [
+            { name: "OC1", description: "Orientation Course 1", units: 3 },
+            { name: "CSIT1", description: "Introduction To Computing", units: 3 },
+            { name: "CSIT2", description: "Fundamentals Of Programming / Computer Programming 1", units: 3 },
+            { name: "NSTP11L", description: "NSTP 1-Literacy Training Service (LTS)", units: 3 },
+            { name: "PE1", description: "Path Fit 1: Movement Competency Training", units: 2 },
+            { name: "SOCSC1", description: "Understanding The Self / Pag-Unawa Sa Sarili", units: 3 },
+            { name: "ENGLA", description: "Grammar And Speech Enhancement", units: 3 },
+            { name: "CSIT 3", description: "Intermediate Programming / Computer Programming 2", units: 3 },
+            { name: "ITP 1", description: "IT Fundamentals", units: 3 },
+            { name: "ITP 2", description: "Discrete Mathematics", units: 3 },
+            { name: "MATH 1", description: "Mathematics In The Modern World", units: 3 },
+            { name: "NSTP 12L", description: "NST P 2-Literacy Training Service II", units: 3 },
+            { name: "PE 2", description: "Path Fit 2: Fitness Training", units: 2 },
+            { name: "EP 1S", description: "English Proficiency - Start I", units: 3 },
+            { name: "ITP 3", description: "Networking 1 (Cisco 1: Networking Basics)", units: 3 },
+            { name: "ITEL 1A", description: "IT Elective 1: Platform Technologies", units: 3 },
+            { name: "ITEL 2A", description: "IT Elective 2: Object-Oriented Programming", units: 3 },
+            { name: "HIST 1", description: "Readings In Philippine History", units: 3 },
+            { name: "SOC ECON 1", description: "The Contemporary World", units: 3 },
+            { name: "PE 3", description: "Path Fit 3: Sports (Individual/Dual)", units: 2 },
+            { name: "CSIT 4", description: "Data Structures And Algorithms", units: 3 },
+            { name: "ITP 4", description: "Integrative Programming & Technologies 1", units: 3 },
+            { name: "ITP 5", description: "Networking 2 (Cisco 2: Routing Protocols & Concepts)", units: 3 },
+            { name: "ITP 6", description: "Introduction To Human-Computer Interaction", units: 3 },
+            { name: "PHILO 1", description: "Ethics / Etika", units: 3 },
+            { name: "PE 4", description: "Path Fit 4: Sports (Team)", units: 2 },
+            { name: "COM 1", description: "Purposive Communication", units: 3 },
+            { name: "CSIT 5", description: "Information Management", units: 3 }
+        ];
+
+        const subjectsPerPage = 5; // Number of subjects to display per page
+        let currentPage = 1;
+
+        function showSubjects(page) {
+            currentPage = page;
+            const startIndex = (currentPage - 1) * subjectsPerPage;
+            const endIndex = startIndex + subjectsPerPage;
+            const subjectsToShow = subjects.slice(startIndex, endIndex);
+
+            const content = document.querySelector('.content');
+            content.innerHTML = `
+                <h2>Subjects Taken</h2>
+                <table class="info-table">
+                    <tr>
+                        <th>Subject Name</th>
+                        <th>Description</th>
+                        <th>Units</th>
+                    </tr>
+                    ${subjectsToShow.map(subject => `
+                        <tr>
+                            <td>${subject.name}</td>
+                            <td>${subject.description}</td>
+                            <td>${subject.units}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+                <div class="pagination">
+                    ${currentPage > 1 ? `<button onclick="showSubjects(${currentPage - 1})">&lt;</button>` : ''}
+                    ${Array.from({ length: Math.ceil(subjects.length / subjectsPerPage) }, (_, i) => `
+                        <button onclick="showSubjects(${i + 1})">${i + 1}</button>
+                    `).join('')}
+                    ${currentPage < Math.ceil(subjects.length / subjectsPerPage) ? `<button onclick="showSubjects(${currentPage + 1})">&gt;</button>` : ''}
+                </div>
+            `;
+        }
+
+        function showSection(section) {
+            const content = document.querySelector('.content');
+            if (section === 'gallery') {
+                content.innerHTML = `
+                    <h2>Gallery</h2>
+                    <div class="carousel">
+                        <div class="carousel-images">
+                            <img src="ll.jpg" alt="Image 1" class="carousel-image">
+                            <img src="kk.jpg" alt="Image 2" class="carousel-image">
+                            <img src="mm.jpg" alt="Image 3" class="carousel-image">
+                            <img src="nn.jpg" alt="Image 4" class="carousel-image">
+                            <img src="pp.jpg" alt="Image 5" class="carousel-image">
+                            <img src="aa.jpg" alt="Image 6" class="carousel-image">
+                            <img src="a.jpg" alt="Image 7" class="carousel-image">
+                            <img src="bb.jpg" alt="Image 8" class="carousel-image">
+                            <img src="cc.jpg" alt="Image 9" class="carousel-image">
+                            <img src="dd.jpg" alt="Image 10" class="carousel-image">
+                        </div>
+                        <button class="prev">❮</button>
+                        <button class="next">❯</button>
+                    </div>
+                `;
+                showCarousel();
+            } else if (section === 'aboutMe') {
+                content.innerHTML = `
+                    <div id="aboutMe">
+                        <h2>About Me</h2>
+                        <div class="profile-container">
+                            <img src="kaye.jpg" alt="Profile Picture" class="profile-image">
+                            <div class="info">
+                                <table class="info-table">
+                                    <tr>
+                                        <td class="label">Name:</td>
+                                        <td>Kaye M. Leyaga</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Address:</td>
+                                        <td>Katipunan Sapad Lanao del Norte</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Gender:</td>
+                                        <td>Female</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Age:</td>
+                                        <td>19</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Occupation:</td>
+                                        <td>Student</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Course:</td>
+                                        <td>Bachelor of Science in Information Technology</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'enrolled') {
+                const enrolledSubjects = [
+                    { schedule: "Mon & Wed (0410-0510P / 1110-1240N)", name: "ITP4", description: "Integrative Programming", units: 3 },
+                    { schedule: "Mon & Wed (0935-1035A / 0800-0930A)", name: "ITP5", description: "Networking 2", units: 3 },
+                    { schedule: "Mon & Wed (1110-1210N / 0100-0230P)", name: "ITP6", description: "Introduction to HCI", units: 3 },
+                    { schedule: "Fri / 0800-1100A", name: "PHILO1", description: "Ethics", units: 3 },
+                    { schedule: "Fri / 0600-0800A", name: "PE4", description: "Path Fit 4", units: 2 },
+                    { schedule: "Mon & Wed / 0235-0405P", name: "COM1", description: "Purposive Communication", units: 3 },
+                    { schedule: "Tue & Thu / (0305-0405P / 0410-0540P)", name: "CSIT5", description: "Information Management", units: 3 }
+                ];
+
+                let totalEnrolledUnits = enrolledSubjects.reduce((sum, subject) => sum + subject.units, 0);
+
+                content.innerHTML = `
+                    <h2>Enrolled Subjects</h2>
+                    <table class="info-table">
+                        <tr>
+                            <th>Schedule</th>
+                            <th>Subject Name</th>
+                            <th>Description</th>
+                            <th>Units</th>
+                        </tr>
+                        ${enrolledSubjects.map(subject => `
+                            <tr>
+                                <td>${subject.schedule}</td>
+                                <td>${subject.name}</td>
+                                <td>${subject.description}</td>
+                                <td>${subject.units}</td>
+                            </tr>
+                        `).join('')}
+                        <tr class="total-row"><td colspan="3">Total Units:</td><td>${totalEnrolledUnits}</td></tr>
+                    </table>
+                `;
+            } else if (section === 'contactMe') {
+                content.innerHTML = `
+                    <div id="contactMe">
+                        <h2>Contact Me</h2>
+                        <p>Email: <a href="mailto:leygaking@gmail..com">support@example.com</a></p>
+                        <p>Contact Number: <a href="tel:+11234567890">+1 123 456 7890</a></p>
+                        <p>Facebook: <a href="https://www.facebook.com/yourprofile" target="_blank">Your Facebook Profile</a></p>
+                    </div>
+                `;
+            } else if (section === 'myFavorites') {
+                content.innerHTML = `
+                    <div id="myFavorites">
+                        <h2>My Favorites</h2>
+                        <div class="favorites-container">
+                            <div class="favorite-item">
+                                <img src="meteor.jpg" alt="meteor" class="favorite-image">
+                                <h3>Metor garden 2018</h3>
+                                <p>This is one of My favorites movie its is a chiness movie in 2018 .</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="shrimp.jpg" alt="Food Shrimp" class="favorite-image">
+                                <h3>Shrimp</h3>
+                                <p>Shrimp is definitely my favorite food It's incredibly versatile, delicious, and packed with flavor..</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="paris.jpg" alt="1984" class="favorite-image">
+                                <h3>Paris</h3>
+                                <p>Paris is a romantic and timeless city, known for its elegant architecture, rich history, and charming streets filled with art, fashion, and café culture Thats why i love it.</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="ch.jpg" alt="The Shawshank Redemption" class="favorite-image">
+                                <h3>Shanghai China</h3>
+                                <p>Shanghai is a vibrant city blending modern skyscrapers, historic landmarks, and rich culture with dazzling lights and endless energy inspired with a series.</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="blo.jpg" alt="Inception" class="favorite-image">
+                                <h3>Cherry blossoms</h3>
+                                <p>Cherry blossoms are delicate, pink petals that symbolize beauty, renewal, and the fleeting nature of life.</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="gold.jpg" alt="The Dark Knight" class="favorite-image">
+                                <h3>Golden Ritriever</h3>
+                                <p>Golden Retrievers are loving, loyal, and playful dogs with warm hearts and endless affection. .</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="c.jpg" alt="Bohemian Rhapsody" class="favorite-image">
+                                <h3>CODM</h3>
+                                <p>Everytime i play with friends means laughter, good vibes, and unforgettable memories. .</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="mg.jpg" alt="Imagine" class="favorite-image">
+                                <h3>Meteor Garden music</h3>
+                                <p>Meteor Garden music is romantic, emotional, and filled with heartfelt ballads and uplifting pop melodies..</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="R.jpg" alt="Billie Jean" class="favorite-image">
+                                <h3>Car</h3>
+                                <p>The Mustang is an iconic muscle car, known for its powerful performance, sleek design, and thrilling driving experience..</p>
+                            </div>
+                            <div class="favorite-item">
+                                <img src="bad.jpg" alt="Shape of You" class="favorite-image">
+                                <h3>Badminton</h3>
+                                <p>Badminton is my favorites sport aside that its fun i can also hangout with my friends.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header">Kaye M. Leyaga</div>
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="showSection('aboutMe')">About Me</button>
+            <button onclick="showSubjects(1)">Subjects Taken</button>
+            <button onclick="showSection('enrolled')">Enrolled</button>
+            <button onclick="showSection('contactMe')">Contact Me</button>
+            <button onclick="showSection('myFavorites')">My Favorites</button>
+            <button onclick="showSection('gallery')">Gallery</button> <!-- New Gallery Button -->
+        </div>
+        <div class="content">
+            <div id="aboutMe">
+                <h2>About Me</h2>
+                <div class="profile-container">
+                    <img src="kaye.jpg" alt="Profile Picture" class="profile-image">
+                    <div class="info">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Name:</td>
+                                <td>Kaye M. Leyaga</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Address:</td>
+                                <td>Katipunan Sapad Lanao del Norte</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Gender:</td>
+                                <td>Female</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Age:</td>
+                                <td>19</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Occupation:</td>
+                                <td>Student</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Course:</td>
+                                <td>Bachelor of Science in Information Technology</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <center>
+            © 2023 - 2024 ITP4 | All Rights Reserved
+        </center>
+    </div>
+</body>
+</html>
